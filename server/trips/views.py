@@ -7,7 +7,7 @@ from .models import Trip
 from .serializers import LogInSerializer, UserSerializers, NestedTripSerializer
 
 
-class SingUpView(generics.CreateAPIView):
+class SignUpView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializers
 

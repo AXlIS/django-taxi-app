@@ -19,11 +19,11 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from trips.views import LogInView, SingUpView
+from trips.views import LogInView, SignUpView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/sing_up/', SingUpView.as_view(), name='sing_up'),
+    path('api/sign_up/', SignUpView.as_view(), name='sign_up'),
     path('api/log_in/', LogInView.as_view(), name='log_in'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/trip/', include('trips.urls', 'trip',)),

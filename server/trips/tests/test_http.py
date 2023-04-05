@@ -33,7 +33,7 @@ def create_photo_file():
 
 class AuthenticationTest(APITestCase):
     def test_user_can_sing_up(self):
-        response = self.client.post(reverse('sing_up'), data={
+        response = self.client.post(reverse('sign_up'), data={
             'username': 'user@example.com',
             'first_name': 'Test',
             'last_name': 'User',

@@ -10,6 +10,9 @@ import Landing from './components/Landing';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 
+import Driver from './components/Driver';
+import Rider from './components/Rider';
+
 import './App.css';
 
 function App() {
@@ -18,7 +21,7 @@ function App() {
   });
 
   const logIn = async (username, password) => {
-    const url = '/api/log_in/';
+    const url = `${process.env.REACT_APP_BASE_URL}/api/log_in/`;
     try {
       const response = await axios.post(url, {username, password});
       window.localStorage.setItem(
@@ -39,31 +42,12 @@ function App() {
 
   return (
     <Routes>
-      <Route
-        path='/'
-        element={
-          <Layout
-            isLoggedIn={isLoggedIn}
-            logOut={logOut}
-          />
-        }
-      >
+      <Route path='/' element={<Layout isLoggedIn={isLoggedIn} logOut={logOut}/>}>
         <Route index element={<Landing isLoggedIn={isLoggedIn}/>}/>
-        <Route
-          path='sign-up'
-          element={
-            <SignUp isLoggedIn={isLoggedIn}/>
-          }
-        />
-        <Route
-          path='log-in'
-          element={
-            <LogIn
-              isLoggedIn={isLoggedIn}
-              logIn={logIn}
-            />
-          }
-        />
+        <Route path='sign-up' element={<SignUp isLoggedIn={isLoggedIn}/>}/>
+        <Route path='log-in' element={<LogIn isLoggedIn={isLoggedIn} logIn={logIn}/>}/>
+        <Route path='rider' element={<Rider/>}/>
+        <Route path='driver' element={<Driver/>}/>
       </Route>
     </Routes>
   );

@@ -16,7 +16,7 @@ services:
       - PGHOST=taxi-database
       - REDIS_URL=redis://taxi-redis:6379/0
     ports:
-      - 8003:8000
+      - "8003:8000"
     volumes:
       - ./server:/usr/src/app
 
@@ -27,8 +27,11 @@ services:
     container_name: taxi-client
     depends_on:
       - taxi-server
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_BASE_URL=http://localhost:8003
     ports:
-      - 3001:3000
+      - "3001:3000"
     stdin_open: true
     volumes:
       - ./client:/usr/src/app
