@@ -8,14 +8,20 @@ export const getUser = () => {
   return undefined;
 };
 
+export const getAccessToken = () => {
+  const auth = JSON.parse(window.localStorage.getItem('taxi.auth'));
+  if (auth) {
+    return auth.access;
+  }
+  return undefined;
+};
+
 export const isDriver = () => {
   const user = getUser();
-  console.log(user)
   return user && user.group === 'driver';
 };
 
 export const isRider = () => {
   const user = getUser();
-  console.log(user)
   return user && user.group === 'rider';
 };

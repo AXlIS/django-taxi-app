@@ -1,14 +1,48 @@
-import React from 'react';
-import {Breadcrumb, Card} from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Breadcrumb} from 'react-bootstrap';
+import {Navigate} from 'react-router-dom';
 
-import { isDriver } from '../services/AuthService';
+import TripCard from './TripCard';
+import {isDriver} from '../services/AuthService';
+import {getTrips} from '../services/TripService';
 
 function Driver(props) {
 
+  const [trips, setTrips] = useState([]);
+
+  useEffect(() => {
+    const loadTrips = async () => {
+      const {response, isError} = await getTrips();
+      if (isError) {
+        setTrips([]);
+      } else {
+        setTrips(response.data);
+      }
+    };
+    loadTrips();
+  }, []);
+
   if (!isDriver()) {
-    return <Navigate to='/' />;
+    return <Navigate to='/'/>;
   }
+
+  const getCurrentTrips = () => {
+    return trips.filter(trip => {
+      return trip.driver !== null && trip.status !== 'COMPLETED';
+    });
+  };
+
+  const getRequestedTrips = () => {
+    return trips.filter(trip => {
+      return trip.status === 'REQUESTED';
+    });
+  };
+
+  const getCompletedTrips = () => {
+    return trips.filter(trip => {
+      return trip.status === 'COMPLETED';
+    });
+  };
 
   return (
     <>
@@ -16,24 +50,28 @@ function Driver(props) {
         <Breadcrumb.Item href='/'>Home</Breadcrumb.Item>
         <Breadcrumb.Item active>Dashboard</Breadcrumb.Item>
       </Breadcrumb>
-      <Card className='mb-3'>
-        <Card.Header>Current Trip</Card.Header>
-        <Card.Body>
-          No trips.
-        </Card.Body>
-      </Card>
-      <Card className='mb-3'>
-        <Card.Header>Requested Trips</Card.Header>
-        <Card.Body>
-          No trips.
-        </Card.Body>
-      </Card>
-      <Card className='mb-3'>
-        <Card.Header>Recent Trips</Card.Header>
-        <Card.Body>
-          No trips.
-        </Card.Body>
-      </Card>
+
+      <TripCard
+        title='Current Trip'
+        trips={getCurrentTrips()}
+        group='driver'
+        otherGroup='rider'
+      />
+
+      <TripCard
+        title='Requested Trips'
+        trips={getRequestedTrips()}
+        group='driver'
+        otherGroup='rider'
+      />
+
+      <TripCard
+        title='Recent Trips'
+        trips={getCompletedTrips()}
+        group='driver'
+        otherGroup='rider'
+      />
+
     </>
   );
 }
